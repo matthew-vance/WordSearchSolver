@@ -12,26 +12,15 @@ namespace WordSearchSolverTests
         WordFinder wordFinder = new WordFinder(GetMockPuzzle());
 
         [Theory]
-        [InlineData("BONES", true)]
-        [InlineData("CHEKOV", false)]
-        public void Should_TryFindWordWithExpected_When_PassedWord(string word, bool expected)
+        [ClassData(typeof(ReturnLocationTestData))]
+        public void Should_ReturnWordLocation_When_PassedWordInPuzzle(string word, bool expectedWordFound, int[,] expectedWordLocation)
         {
             // Act
             var wordFound = wordFinder.TryFindWord(word, out int[,] location);
 
             // Assert
-            Assert.Equal(expected, wordFound);
-        }
-
-        [Theory]
-        [ClassData(typeof(ReturnLocationTestData))]
-        public void Should_ReturnWordLocation_When_PassedWordInPuzzle(string word, int[,] expected)
-        {
-            // Act
-            wordFinder.TryFindWord(word, out int[,] location);
-
-            // Assert
-            Assert.Equal(expected, location);
+            Assert.Equal(expectedWordFound, wordFound);
+            Assert.Equal(expectedWordLocation, location);
         }
 
         private static char[,] GetMockPuzzle()
@@ -59,8 +48,8 @@ namespace WordSearchSolverTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "BONES", new int[5, 2] { { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 } }};
-            yield return new object[] { "CHEKOV", new int[6,2]};
+            yield return new object[] { "BONES", true, new int[5, 2] { { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 } } };
+            yield return new object[] { "CHEKOV", false, new int[6, 2] };
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
