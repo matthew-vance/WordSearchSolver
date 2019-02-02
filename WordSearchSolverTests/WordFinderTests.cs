@@ -48,8 +48,10 @@ namespace WordSearchSolverTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "BONES", true, new int[5, 2] { { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 } } };
-            yield return new object[] { "CHEKOV", false, new int[6, 2] };
+            // word, found, location
+            yield return new object[] { "BONES", true, new int[5, 2] { { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 } } }; // Search down
+            yield return new object[] { "CHEKOV", false, null }; // Not in puzzle
+            yield return new object[] { "KHAN", true, new int[4, 2] { {5, 9}, {5, 8}, {5, 7}, {5, 6} } }; // Search up
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
