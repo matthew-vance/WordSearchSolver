@@ -11,7 +11,7 @@ namespace WordSearchSolverTests
         public void Should_TryFindWord_When_PassedWordInPuzzle()
         {
             // Arrange
-            var wordFinder = new WordFinder();
+            var wordFinder = new WordFinder(It.IsAny<char[,]>());
 
             // Act
             var wordFound = wordFinder.TryFindWord(It.IsAny<string>());
