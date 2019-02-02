@@ -30,11 +30,10 @@ namespace WordSearchSolver
                     if (currentPuzzleLetter != wordFirstLetter)
                         continue;
 
-                    wordFound = TrySearchForWord(word, row, column, out int[,] foundLocation);
+                    wordFound = TrySearchForWord(word, row, column, out location);
 
                     if (wordFound)
                     {
-                        location = foundLocation;
                         shouldStopSearching = true;
                         break;
                     }
@@ -87,7 +86,11 @@ namespace WordSearchSolver
                     UpdateLocation(i, column, currentRow, location);
                 }
                 else
+                {
+                    location = null;
                     return false;
+                }
+                   
             }
             return true;
         }
@@ -108,7 +111,10 @@ namespace WordSearchSolver
                     UpdateLocation(i, column, currentRow, location);
                 }
                 else
+                {
+                    location = null;
                     return false;
+                }
             }
             return true;
         }
