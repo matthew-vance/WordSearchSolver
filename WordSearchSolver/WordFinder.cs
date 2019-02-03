@@ -80,16 +80,7 @@ namespace WordSearchSolver
             if (_word.Length + row > _puzzle.GetLength(0))
                 return false;
 
-            for (int i = 0; i < _word.Length; i++)
-            {
-                var currentRow = row + i;
-                var letterFound = FindLetter(i, currentRow, column);
-
-                if (!letterFound)
-                    return false;
-
-            }
-            return true;
+            return FindLetter((i) => row + i, (i) => column);
         }
 
         private bool SearchUp(int row, int column)
@@ -97,15 +88,7 @@ namespace WordSearchSolver
             if (row - _word.Length < 0)
                 return false;
 
-            for (int i = 0; i < _word.Length; i++)
-            {
-                var currentRow = row - i;
-                var letterFound = FindLetter(i, currentRow, column);
-
-                if (!letterFound)
-                    return false;
-            }
-            return true;
+            return FindLetter((i) => row - i, (i) => column);
         }
 
         private bool SearchBackward(int row, int column)
@@ -113,15 +96,7 @@ namespace WordSearchSolver
             if (column - _word.Length < 0)
                 return false;
 
-            for (int i = 0; i < _word.Length; i++)
-            {
-                var currentColumn = column - i;
-                var letterFound = FindLetter(i, row, currentColumn);
-
-                if (!letterFound)
-                    return false;
-            }
-            return true;
+            return FindLetter((i) => row, (i) => column - i);
         }
 
         private bool SearchForward(int row, int column)
@@ -129,15 +104,7 @@ namespace WordSearchSolver
             if (column + _word.Length > _puzzle.GetLength(1))
                 return false;
 
-            for (int i = 0; i < _word.Length; i++)
-            {
-                var currentColumn = column + i;
-                var letterFound = FindLetter(i, row, currentColumn);
-
-                if (!letterFound)
-                    return false;
-            }
-            return true;
+            return FindLetter((i) => row, (i) => column + i);
         }
 
         #endregion
@@ -148,15 +115,36 @@ namespace WordSearchSolver
             _location[index, 1] = row;
         }
 
-        private bool FindLetter(int index, int row, int column)
+        private bool LetterFound(int index, int row, int column)
         {
             var wordLength = _word.Length;
             if (_puzzle[row, column] == _word[index])
             {
-                UpdateLocation(index, column, row);
                 return true;
             }
             return false;
+        }
+
+        private bool FindLetter(Func<int, int> rowStepper, Func<int, int> columnStepper)
+        {
+            for (int i = 0; i < _word.Length; i++)
+            {
+                var row = rowStepper(i);
+                var column = columnStepper(i);
+
+                var letterFound = LetterFound(i, row, column);
+
+                if(letterFound)
+                {
+                    UpdateLocation(i, column, row);
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
