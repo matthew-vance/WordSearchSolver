@@ -56,7 +56,8 @@ namespace WordSearchSolver
             {
                 SearchDown,
                 SearchUp,
-                SearchBackward
+                SearchBackward,
+                SearchForward
             };
 
             foreach (var method in trySearchMethods)
@@ -115,6 +116,22 @@ namespace WordSearchSolver
             for (int i = 0; i < _word.Length; i++)
             {
                 var currentColumn = column - i;
+                var letterFound = FindLetter(i, row, currentColumn);
+
+                if (!letterFound)
+                    return false;
+            }
+            return true;
+        }
+
+        private bool SearchForward(int row, int column)
+        {
+            if (column + _word.Length > _puzzle.GetLength(1))
+                return false;
+
+            for (int i = 0; i < _word.Length; i++)
+            {
+                var currentColumn = column + i;
                 var letterFound = FindLetter(i, row, currentColumn);
 
                 if (!letterFound)

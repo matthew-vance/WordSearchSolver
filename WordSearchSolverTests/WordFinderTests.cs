@@ -51,8 +51,9 @@ namespace WordSearchSolverTests
             // word, found, location
             yield return new object[] { "BONES", true, new int[5, 2] { { 0, 6 }, { 0, 7 }, { 0, 8 }, { 0, 9 }, { 0, 10 } } }; // Search down
             yield return new object[] { "CHEKOV", false, null }; // Not in puzzle
-            yield return new object[] { "KHAN", true, new int[4, 2] { {5, 9}, {5, 8}, {5, 7}, {5, 6} } }; // Search up
-            yield return new object[] { "KIRK", true, new int[4, 2] { {4, 7}, {3, 7}, {2, 7}, {1, 7} } }; // Search backward
+            yield return new object[] { "KHAN", true, new int[4, 2] { { 5, 9 }, { 5, 8 }, { 5, 7 }, { 5, 6 } } }; // Search up
+            yield return new object[] { "KIRK", true, new int[4, 2] { { 4, 7 }, { 3, 7 }, { 2, 7 }, { 1, 7 } } }; // Search backward
+            yield return new object[] { "SCOTTY", true, new int[6, 2] { { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } } }; // Search forward
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
