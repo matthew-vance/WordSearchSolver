@@ -8,6 +8,8 @@ namespace WordSearchSolver
     internal class WordFinder
     {
         private readonly char[,] _puzzle;
+        private string _word;
+        private int[,] _location;
 
         public WordFinder(char[,] puzzle)
         {
@@ -16,10 +18,10 @@ namespace WordSearchSolver
 
         public bool TryFindWord(string word, out int[,] location)
         {
+            _word = word;
             var shouldStopSearching = false;
             var wordFound = false;
-            location = null;
-            var wordFirstLetter = word[0];
+            var wordFirstLetter = _word[0];
 
             int row = 0;
             while (!shouldStopSearching)
@@ -30,7 +32,7 @@ namespace WordSearchSolver
                     if (currentPuzzleLetter != wordFirstLetter)
                         continue;
 
-                    wordFound = TrySearchForWord(word, row, column, out location);
+                    wordFound = TrySearchForWord(row, column);
 
                     if (wordFound)
                     {
@@ -43,21 +45,22 @@ namespace WordSearchSolver
                     shouldStopSearching = true;
             }
 
+            location = wordFound ? _location : null;
             return wordFound;
         }
 
-        private bool TrySearchForWord(string word, int row, int column, out int[,] location)
+        private bool TrySearchForWord(int row, int column)
         {
-            location = null;
             var trySearchMethods = new List<TrySearchMethodDelegate>
             {
                 TrySearchDown,
-                TrySearchUp
+                TrySearchUp,
+                TrySearchBackward
             };
 
             foreach (var method in trySearchMethods)
             {
-                var wordFound = method(word, row, column, out location);
+                var wordFound = method(row, column);
                 if (wordFound)
                 {
                     return wordFound;
@@ -66,65 +69,78 @@ namespace WordSearchSolver
             return false;
         }
 
-        private delegate bool TrySearchMethodDelegate(string word, int row, int column, out int[,] location);
+        private delegate bool TrySearchMethodDelegate(int row, int column);
 
         #region Search Methods
 
-        private bool TrySearchDown(string word, int row, int column, out int[,] location)
+        private bool TrySearchDown(int row, int column)
         {
-            var wordLength = word.Length;
-            location = new int[wordLength, 2];
+            _location = new int[_word.Length, 2];
 
-            if (wordLength + row > _puzzle.GetLength(0))
+            if (_word.Length + row > _puzzle.GetLength(0))
                 return false;
 
-            for (int i = 0; i < wordLength; i++)
+            for (int i = 0; i < _word.Length; i++)
             {
                 var currentRow = row + i;
-                if (_puzzle[currentRow, column] == word[i])
-                {
-                    UpdateLocation(i, column, currentRow, location);
-                }
-                else
-                {
-                    location = null;
+                var letterFound = TryFindLetter(i, currentRow, column);
+
+                if (!letterFound)
                     return false;
-                }
-                   
+
             }
             return true;
         }
 
-        private bool TrySearchUp(string word, int row, int column, out int[,] location)
+        private bool TrySearchUp(int row, int column)
         {
-            var wordLength = word.Length;
-            location = new int[word.Length, 2];
-
-            if (row - wordLength < 0)
+            if (row - _word.Length < 0)
                 return false;
 
-            for (int i = 0; i < wordLength; i++)
+            for (int i = 0; i < _word.Length; i++)
             {
                 var currentRow = row - i;
-                if (_puzzle[currentRow, column] == word[i])
-                {
-                    UpdateLocation(i, column, currentRow, location);
-                }
-                else
-                {
-                    location = null;
+                var letterFound = TryFindLetter(i, currentRow, column);
+
+                if (!letterFound)
                     return false;
-                }
+            }
+            return true;
+        }
+
+        private bool TrySearchBackward(int row, int column)
+        {
+            if (column - _word.Length < 0)
+                return false;
+
+            for (int i = 0; i < _word.Length; i++)
+            {
+                var currentColumn = column - i;
+                var letterFound = TryFindLetter(i, row, currentColumn);
+
+                if (!letterFound)
+                    return false;
             }
             return true;
         }
 
         #endregion
 
-        private void UpdateLocation(int index, int column, int row, int[,] location)
+        private void UpdateLocation(int index, int column, int row)
         {
-            location[index, 0] = column;
-            location[index, 1] = row;
+            _location[index, 0] = column;
+            _location[index, 1] = row;
+        }
+
+        private bool TryFindLetter(int index, int row, int column)
+        {
+            var wordLength = _word.Length;
+            if (_puzzle[row, column] == _word[index])
+            {
+                UpdateLocation(index, column, row);
+                return true;
+            }
+            return false;
         }
     }
 }
