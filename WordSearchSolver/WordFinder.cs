@@ -19,6 +19,7 @@ namespace WordSearchSolver
         public bool TryFindWord(string word, out int[,] location)
         {
             _word = word;
+            _location = new int[_word.Length, 2];
             var shouldStopSearching = false;
             var wordFound = false;
             var wordFirstLetter = _word[0];
@@ -32,7 +33,7 @@ namespace WordSearchSolver
                     if (currentPuzzleLetter != wordFirstLetter)
                         continue;
 
-                    wordFound = TrySearchForWord(row, column);
+                    wordFound = SearchForWord(row, column);
 
                     if (wordFound)
                     {
@@ -49,13 +50,13 @@ namespace WordSearchSolver
             return wordFound;
         }
 
-        private bool TrySearchForWord(int row, int column)
+        private bool SearchForWord(int row, int column)
         {
-            var trySearchMethods = new List<TrySearchMethodDelegate>
+            var trySearchMethods = new List<SearchMethodDelegate>
             {
-                TrySearchDown,
-                TrySearchUp,
-                TrySearchBackward
+                SearchDown,
+                SearchUp,
+                SearchBackward
             };
 
             foreach (var method in trySearchMethods)
@@ -69,21 +70,19 @@ namespace WordSearchSolver
             return false;
         }
 
-        private delegate bool TrySearchMethodDelegate(int row, int column);
+        private delegate bool SearchMethodDelegate(int row, int column);
 
         #region Search Methods
 
-        private bool TrySearchDown(int row, int column)
+        private bool SearchDown(int row, int column)
         {
-            _location = new int[_word.Length, 2];
-
             if (_word.Length + row > _puzzle.GetLength(0))
                 return false;
 
             for (int i = 0; i < _word.Length; i++)
             {
                 var currentRow = row + i;
-                var letterFound = TryFindLetter(i, currentRow, column);
+                var letterFound = FindLetter(i, currentRow, column);
 
                 if (!letterFound)
                     return false;
@@ -92,7 +91,7 @@ namespace WordSearchSolver
             return true;
         }
 
-        private bool TrySearchUp(int row, int column)
+        private bool SearchUp(int row, int column)
         {
             if (row - _word.Length < 0)
                 return false;
@@ -100,7 +99,7 @@ namespace WordSearchSolver
             for (int i = 0; i < _word.Length; i++)
             {
                 var currentRow = row - i;
-                var letterFound = TryFindLetter(i, currentRow, column);
+                var letterFound = FindLetter(i, currentRow, column);
 
                 if (!letterFound)
                     return false;
@@ -108,7 +107,7 @@ namespace WordSearchSolver
             return true;
         }
 
-        private bool TrySearchBackward(int row, int column)
+        private bool SearchBackward(int row, int column)
         {
             if (column - _word.Length < 0)
                 return false;
@@ -116,7 +115,7 @@ namespace WordSearchSolver
             for (int i = 0; i < _word.Length; i++)
             {
                 var currentColumn = column - i;
-                var letterFound = TryFindLetter(i, row, currentColumn);
+                var letterFound = FindLetter(i, row, currentColumn);
 
                 if (!letterFound)
                     return false;
@@ -132,7 +131,7 @@ namespace WordSearchSolver
             _location[index, 1] = row;
         }
 
-        private bool TryFindLetter(int index, int row, int column)
+        private bool FindLetter(int index, int row, int column)
         {
             var wordLength = _word.Length;
             if (_puzzle[row, column] == _word[index])
