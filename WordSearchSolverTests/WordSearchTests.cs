@@ -2,6 +2,7 @@
 using WordSearchSolver;
 using System.Collections.Generic;
 using Xunit;
+using Moq;
 
 namespace WordSearchSolverTests
 {
@@ -11,8 +12,8 @@ namespace WordSearchSolverTests
         public void Should_CreateWordSearchWIthWordsAndPuzzle_When_InstantiatedWithWordsAndPuzzle()
         {
             // Arrange
-            var words = new List<string>() { "BONES", "CHEKOV", "KHAN", "KIRK", "SCOTTY", "SPOCK", "SULU", "UHURA", "COMPUTER" };
-            var puzzle = TestHelpers.GetMockPuzzle();
+            var words = It.IsAny<IList<string>>();
+            var puzzle = It.IsAny<char[,]>();
 
             // Act
             var wordSearch = new WordSearch(words, puzzle);
