@@ -57,7 +57,8 @@ namespace WordSearchSolver
                 SearchUp,
                 SearchBackward,
                 SearchForward,
-                SearchDownAndForward
+                SearchDownAndForward,
+                SearchUpAndBackward
             };
 
             foreach (var method in trySearchMethods)
@@ -77,7 +78,7 @@ namespace WordSearchSolver
 
         private bool SearchDown(int row, int column)
         {
-            if (WordOutOfBoundsDown(column))
+            if (WordOutOfBoundsDown(row))
                 return false;
 
             return FindLetter((i) => row + i, (i) => column);
@@ -85,7 +86,7 @@ namespace WordSearchSolver
 
         private bool SearchUp(int row, int column)
         {
-            if (row - _word.Length < 0)
+            if (WordOutOfBoundsUp(row))
                 return false;
 
             return FindLetter((i) => row - i, (i) => column);
@@ -93,7 +94,7 @@ namespace WordSearchSolver
 
         private bool SearchBackward(int row, int column)
         {
-            if (column - _word.Length < 0)
+            if (WordOutOfBoundsBackward(column))
                 return false;
 
             return FindLetter((i) => row, (i) => column - i);
@@ -101,7 +102,7 @@ namespace WordSearchSolver
 
         private bool SearchForward(int row, int column)
         {
-            if (WordOutOfBoundsForward(row))
+            if (WordOutOfBoundsForward(column))
                 return false;
 
             return FindLetter((i) => row, (i) => column + i);
@@ -109,22 +110,40 @@ namespace WordSearchSolver
 
         private bool SearchDownAndForward(int row, int column)
         {
-            if (WordOutOfBoundsDown(column) || WordOutOfBoundsForward(row))
+            if (WordOutOfBoundsDown(row) || WordOutOfBoundsForward(column))
                 return false;
 
             return FindLetter((i) => row + i, (i) => column + i);
         }
 
-        #endregion
-
-        private bool WordOutOfBoundsDown(int column)
+        private bool SearchUpAndBackward(int row, int column)
         {
-            return column + _word.Length > _puzzle.GetLength(1);
+            if (WordOutOfBoundsUp(row) || WordOutOfBoundsBackward(column))
+                return false;
+
+            return FindLetter((i) => row - i, (i) => column - i);
         }
 
-        private bool WordOutOfBoundsForward(int row)
+        #endregion
+
+        private bool WordOutOfBoundsDown(int row)
         {
-            return _word.Length + row > _puzzle.GetLength(0);
+            return row + _word.Length > _puzzle.GetLength(1);
+        }
+
+        private bool WordOutOfBoundsForward(int column)
+        {
+            return _word.Length + column > _puzzle.GetLength(0);
+        }
+
+        private bool WordOutOfBoundsUp(int row)
+        {
+            return row - _word.Length + 1 < 0;
+        }
+
+        private bool WordOutOfBoundsBackward(int column)
+        {
+            return column - _word.Length + 1 < 0;
         }
 
         private void UpdateLocation(int index, int column, int row)

@@ -55,6 +55,7 @@ namespace WordSearchSolverTests
             yield return new object[] { "KIRK", true, new int[4, 2] { { 4, 7 }, { 3, 7 }, { 2, 7 }, { 1, 7 } } }; // Search backward
             yield return new object[] { "SCOTTY", true, new int[6, 2] { { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 }, { 4, 5 }, { 5, 5 } } }; // Search forward
             yield return new object[] { "SPOCK", true, new int[5, 2] { {2, 1}, {3, 2}, {4, 3}, {5, 4}, {6, 5} } }; // Search diagonal down/forward
+            yield return new object[] { "SULU", true, new int[4, 2] { {3, 3}, {2, 2}, {1, 1}, {0, 0} } }; // Search diagonal up/backward
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
