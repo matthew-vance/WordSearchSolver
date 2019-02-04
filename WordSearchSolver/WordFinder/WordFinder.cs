@@ -5,15 +5,21 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("WordSearchSolverTests")]
 namespace WordSearchSolver
 {
-    internal class WordFinder
+    internal class WordFinder : IWordFinder
     {
-        private readonly char[,] _puzzle;
         private string _word;
         private int[,] _location;
 
-        public WordFinder(char[,] puzzle)
+        public char[,] Puzzle { get; private set; }
+
+        public WordFinder()
         {
-            _puzzle = puzzle;
+            Puzzle = new char[,] { };
+        }
+
+        public void LoadPuzzle(char[,] puzzle)
+        {
+            Puzzle = puzzle;
         }
 
         public bool TryFindWord(string word, out int[,] location)
@@ -27,9 +33,9 @@ namespace WordSearchSolver
             int row = 0;
             while (!shouldStopSearching)
             {
-                for (int column = 0; column < _puzzle.GetLength(1); column++)
+                for (int column = 0; column < Puzzle.GetLength(1); column++)
                 {
-                    var currentPuzzleLetter = _puzzle[row, column];
+                    var currentPuzzleLetter = Puzzle[row, column];
                     if (currentPuzzleLetter != wordFirstLetter)
                         continue;
 
@@ -42,7 +48,7 @@ namespace WordSearchSolver
                     }
                 }
                 row++;
-                if (row == _puzzle.GetLength(0))
+                if (row == Puzzle.GetLength(0))
                     shouldStopSearching = true;
             }
             location = wordFound ? _location : null;
@@ -146,12 +152,12 @@ namespace WordSearchSolver
 
         private bool WordOutOfBoundsDown(int row)
         {
-            return row + _word.Length > _puzzle.GetLength(1);
+            return row + _word.Length > Puzzle.GetLength(1);
         }
 
         private bool WordOutOfBoundsForward(int column)
         {
-            return _word.Length + column > _puzzle.GetLength(0);
+            return _word.Length + column > Puzzle.GetLength(0);
         }
 
         private bool WordOutOfBoundsUp(int row)
@@ -172,7 +178,7 @@ namespace WordSearchSolver
 
         private bool LetterFound(int index, int row, int column)
         {
-            if (_puzzle[row, column] == _word[index])
+            if (Puzzle[row, column] == _word[index])
             {
                 return true;
             }

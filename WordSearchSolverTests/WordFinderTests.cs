@@ -9,12 +9,15 @@ namespace WordSearchSolverTests
 {
     public class WordFinderTests
     {
-        WordFinder wordFinder = new WordFinder(TestHelpers.GetMockPuzzle());
+        WordFinder wordFinder = new WordFinder();
 
         [Theory]
         [ClassData(typeof(ReturnLocationTestData))]
         public void Should_ReturnWordLocation_When_PassedWordInPuzzle(string word, bool expectedWordFound, int[,] expectedWordLocation)
         {
+            // Arrange
+            wordFinder.LoadPuzzle(TestHelpers.GetMockPuzzle());
+
             // Act
             var wordFound = wordFinder.TryFindWord(word, out int[,] location);
 
