@@ -172,7 +172,6 @@ namespace WordSearchSolver
 
         private bool LetterFound(int index, int row, int column)
         {
-            var wordLength = _word.Length;
             if (_puzzle[row, column] == _word[index])
             {
                 return true;
