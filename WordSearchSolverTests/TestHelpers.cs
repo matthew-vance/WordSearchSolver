@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WordSearchSolver;
 
 namespace WordSearchSolverTests
 {
     internal static class TestHelpers
     {
-        public static char[,] GetMockPuzzle()
+        public static WordSearch GetMockWordSearch()
         {
-            return new char[,] { {'U','M','K','H','U','L','K','I','N','V','J','O','C','W','E'},
+            var wordsList = new List<Word>();
+            var words = new string[] { "BONES", "CHEKOV", "KHAN", "KIRK", "SCOTTY", "SPOCK", "SULU", "UHURA", "COMPUTER"};
+            foreach (var word in words)
+            {
+                wordsList.Add(new Word(word));
+            }
+            var puzzle = new char[,] { {'U','M','K','H','U','L','K','I','N','V','J','O','C','W','E'},
                                  {'L','L','S','H','K','Z','Z','W','Z','C','G','J','U','Y','G'},
                                  {'H','S','U','P','J','P','R','J','D','H','S','B','X','T','G'},
                                  {'B','R','J','S','O','E','Q','E','T','I','K','K','G','L','E'},
@@ -24,6 +31,7 @@ namespace WordSearchSolverTests
                                  {'W','Z','M','I','S','U','K','U','R','B','I','D','U','X','S'},
                                  {'K','Y','L','B','Q','Q','P','M','D','F','C','K','E','A','B'}
             };
+            return new WordSearch(wordsList, puzzle);
         }
     }
 }

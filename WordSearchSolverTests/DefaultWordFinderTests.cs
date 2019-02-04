@@ -17,7 +17,7 @@ namespace WordSearchSolverTests
         public void Should_ReturnWordLocation_When_PassedWordInPuzzle(Word word, IList<Coordinate> expectedWordLocation)
         {
             // Arrange
-            wordFinder.LoadPuzzle(TestHelpers.GetMockPuzzle());
+            wordFinder.LoadPuzzle(TestHelpers.GetMockWordSearch().Puzzle);
 
             // Act
             wordFinder.FindWord(word);

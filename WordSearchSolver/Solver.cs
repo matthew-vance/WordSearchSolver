@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace WordSearchSolver
@@ -13,9 +14,10 @@ namespace WordSearchSolver
             _wordFinder = wordFinder ?? new DefaultWordFinder();
         }
 
-        public IList<int[]> Solve(WordSearch wordSearch)
+        public void Solve(WordSearch wordSearch)
         {
-            return new List<int[]>();
+            _wordFinder.LoadPuzzle(wordSearch.Puzzle);
+            wordSearch.Words.ToList().ForEach(w => _wordFinder.FindWord(w));
         }
     }
 }
