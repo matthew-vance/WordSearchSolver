@@ -12,5 +12,10 @@ namespace WordSearchSolver
         {
             _wordFinder = wordFinder ?? new DefaultWordFinder();
         }
+
+        public IList<int[]> Solve(WordSearch wordSearch)
+        {
+            return new List<int[]>();
+        }
     }
 }

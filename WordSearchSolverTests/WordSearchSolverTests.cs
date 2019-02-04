@@ -9,17 +9,30 @@ namespace WordSearchSolverTests
 {
     public class WordSearchSolverTests
     {
+        Mock<IWordFinder> wordFinder = new Mock<IWordFinder>();
+
         [Fact]
         public void Should_CreateWordSearchSolver_When_InstantiatedWithWordFinder()
         {
-            // Arrange
-            var wordFinder = new Mock<IWordFinder>().Object;
-
             // Act
-            var wordSearchSolver = new Solver(wordFinder);
+            var wordSearchSolver = new Solver(wordFinder.Object);
 
             // Assert
             Assert.IsType<Solver>(wordSearchSolver);
+        }
+
+        [Fact]
+        public void Should_SolveWordSearch_When_PassedWordSearch()
+        {
+            // Arrange
+            var wordSearchSolver = new Solver(wordFinder.Object);
+            var wordSearch = It.IsAny<WordSearch>();
+
+            // Act
+            var locations = wordSearchSolver.Solve(wordSearch);
+
+            // Assert
+            Assert.Equal(new List<int[]>(), locations);
         }
     }
 }
