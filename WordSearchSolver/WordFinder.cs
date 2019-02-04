@@ -45,7 +45,6 @@ namespace WordSearchSolver
                 if (row == _puzzle.GetLength(0))
                     shouldStopSearching = true;
             }
-
             location = wordFound ? _location : null;
             return wordFound;
         }
@@ -57,7 +56,8 @@ namespace WordSearchSolver
                 SearchDown,
                 SearchUp,
                 SearchBackward,
-                SearchForward
+                SearchForward,
+                SearchDownAndForward
             };
 
             foreach (var method in trySearchMethods)
@@ -77,7 +77,7 @@ namespace WordSearchSolver
 
         private bool SearchDown(int row, int column)
         {
-            if (_word.Length + row > _puzzle.GetLength(0))
+            if (WordOutOfBoundsDown(column))
                 return false;
 
             return FindLetter((i) => row + i, (i) => column);
@@ -101,13 +101,31 @@ namespace WordSearchSolver
 
         private bool SearchForward(int row, int column)
         {
-            if (column + _word.Length > _puzzle.GetLength(1))
+            if (WordOutOfBoundsForward(row))
                 return false;
 
             return FindLetter((i) => row, (i) => column + i);
         }
 
+        private bool SearchDownAndForward(int row, int column)
+        {
+            if (WordOutOfBoundsDown(column) || WordOutOfBoundsForward(row))
+                return false;
+
+            return FindLetter((i) => row + i, (i) => column + i);
+        }
+
         #endregion
+
+        private bool WordOutOfBoundsDown(int column)
+        {
+            return column + _word.Length > _puzzle.GetLength(1);
+        }
+
+        private bool WordOutOfBoundsForward(int row)
+        {
+            return _word.Length + row > _puzzle.GetLength(0);
+        }
 
         private void UpdateLocation(int index, int column, int row)
         {
