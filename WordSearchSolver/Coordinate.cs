@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WordSearchSolver
 {
-    internal class Coordinate
+    public class Coordinate
     {
         public int Row { get; private set; }
         public int Column { get; private set; }

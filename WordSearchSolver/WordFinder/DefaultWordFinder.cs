@@ -8,7 +8,7 @@ namespace WordSearchSolver
     internal class DefaultWordFinder : IWordFinder
     {
         private string _word;
-        private int[,] _location;
+        private IList<Coordinate> _location;
 
         public char[,] Puzzle { get; private set; }
 
@@ -22,10 +22,10 @@ namespace WordSearchSolver
             Puzzle = puzzle;
         }
 
-        public bool TryFindWord(string word, out int[,] location)
+        public bool TryFindWord(string word, out IList<Coordinate> location)
         {
             _word = word;
-            _location = new int[_word.Length, 2];
+            _location = new List<Coordinate>();
             var shouldStopSearching = false;
             var wordFound = false;
             var wordFirstLetter = _word[0];
@@ -170,10 +170,9 @@ namespace WordSearchSolver
             return column - _word.Length + 1 < 0;
         }
 
-        private void UpdateLocation(int index, int column, int row)
+        private void UpdateLocation(int row, int column)
         {
-            _location[index, 0] = column;
-            _location[index, 1] = row;
+            _location.Add(new Coordinate(row, column));
         }
 
         private bool LetterFound(int index, int row, int column)
@@ -196,15 +195,21 @@ namespace WordSearchSolver
 
                 if(letterFound)
                 {
-                    UpdateLocation(i, column, row);
+                    UpdateLocation(row, column);
                     continue;
                 }
                 else
                 {
+                    ResetLocation();
                     return false;
                 }
             }
             return true;
+        }
+
+        private void ResetLocation()
+        {
+            _location = new List<Coordinate>();
         }
     }
 }
