@@ -58,7 +58,8 @@ namespace WordSearchSolver
                 SearchBackward,
                 SearchForward,
                 SearchDownAndForward,
-                SearchUpAndBackward
+                SearchUpAndBackward,
+                SearchDownAndBackward
             };
 
             foreach (var method in trySearchMethods)
@@ -122,6 +123,14 @@ namespace WordSearchSolver
                 return false;
 
             return FindLetter((i) => row - i, (i) => column - i);
+        }
+
+        private bool SearchDownAndBackward(int row, int column)
+        {
+            if (WordOutOfBoundsDown(row) || WordOutOfBoundsBackward(column))
+                return false;
+
+            return FindLetter((i) => row + i, (i) => column - i);
         }
 
         #endregion
