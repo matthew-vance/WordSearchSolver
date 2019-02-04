@@ -7,7 +7,7 @@ namespace WordSearchSolver
 {
     internal class DefaultWordFinder : IWordFinder
     {
-        private string _word;
+        private Word _word;
         private IList<Coordinate> _location;
 
         public char[,] Puzzle { get; private set; }
@@ -22,13 +22,13 @@ namespace WordSearchSolver
             Puzzle = puzzle;
         }
 
-        public bool TryFindWord(string word, out IList<Coordinate> location)
+        public void FindWord(Word word)
         {
             _word = word;
             _location = new List<Coordinate>();
             var shouldStopSearching = false;
             var wordFound = false;
-            var wordFirstLetter = _word[0];
+            var wordFirstLetter = _word.Text[0];
 
             int row = 0;
             while (!shouldStopSearching)
@@ -51,8 +51,7 @@ namespace WordSearchSolver
                 if (row == Puzzle.GetLength(0))
                     shouldStopSearching = true;
             }
-            location = wordFound ? _location : null;
-            return wordFound;
+            _word.Location = wordFound ? _location : null;
         }
 
         private bool SearchForWord(int row, int column)
@@ -152,22 +151,22 @@ namespace WordSearchSolver
 
         private bool WordOutOfBoundsDown(int row)
         {
-            return row + _word.Length > Puzzle.GetLength(1);
+            return row + _word.Text.Length > Puzzle.GetLength(1);
         }
 
         private bool WordOutOfBoundsForward(int column)
         {
-            return _word.Length + column > Puzzle.GetLength(0);
+            return _word.Text.Length + column > Puzzle.GetLength(0);
         }
 
         private bool WordOutOfBoundsUp(int row)
         {
-            return row - _word.Length + 1 < 0;
+            return row - _word.Text.Length + 1 < 0;
         }
 
         private bool WordOutOfBoundsBackward(int column)
         {
-            return column - _word.Length + 1 < 0;
+            return column - _word.Text.Length + 1 < 0;
         }
 
         private void UpdateLocation(int row, int column)
@@ -177,7 +176,7 @@ namespace WordSearchSolver
 
         private bool LetterFound(int index, int row, int column)
         {
-            if (Puzzle[row, column] == _word[index])
+            if (Puzzle[row, column] == _word.Text[index])
             {
                 return true;
             }
@@ -186,7 +185,7 @@ namespace WordSearchSolver
 
         private bool FindLetter(Func<int, int> rowStepper, Func<int, int> columnStepper)
         {
-            for (int i = 0; i < _word.Length; i++)
+            for (int i = 0; i < _word.Text.Length; i++)
             {
                 var row = rowStepper(i);
                 var column = columnStepper(i);

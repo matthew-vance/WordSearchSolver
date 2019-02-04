@@ -7,6 +7,6 @@ namespace WordSearchSolver
     public interface IWordFinder
     {
         void LoadPuzzle(char[,] puzzle);
-        bool TryFindWord(string word, out IList<Coordinate> location);
+        void FindWord(Word word);
     }
 }
