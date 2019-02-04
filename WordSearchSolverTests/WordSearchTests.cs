@@ -12,7 +12,7 @@ namespace WordSearchSolverTests
         public void Should_CreateWordSearchWIthWordsAndPuzzle_When_InstantiatedWithWordsAndPuzzle()
         {
             // Arrange
-            var words = It.IsAny<IList<string>>();
+            var words = It.IsAny<IList<Word>>();
             var puzzle = It.IsAny<char[,]>();
 
             // Act

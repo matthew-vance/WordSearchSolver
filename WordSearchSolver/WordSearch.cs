@@ -6,10 +6,10 @@ namespace WordSearchSolver
 {
     public class WordSearch
     {
-        public readonly IList<string> Words;
+        public readonly IList<Word> Words;
         public readonly char[,] Puzzle;
 
-        public WordSearch(IList<string> words, char[,] puzzle)
+        public WordSearch(IList<Word> words, char[,] puzzle)
         {
             Words = words;
             Puzzle = puzzle;
