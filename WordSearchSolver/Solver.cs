@@ -8,9 +8,9 @@ namespace WordSearchSolver
     {
         private readonly IWordFinder _wordFinder;
 
-        public Solver(IWordFinder wordFinder)
+        public Solver(IWordFinder wordFinder = null)
         {
-            _wordFinder = wordFinder;
+            _wordFinder = wordFinder ?? new DefaultWordFinder();
         }
     }
 }

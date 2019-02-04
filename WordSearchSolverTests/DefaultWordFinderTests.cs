@@ -9,7 +9,7 @@ namespace WordSearchSolverTests
 {
     public class WordFinderTests
     {
-        WordFinder wordFinder = new WordFinder();
+        DefaultWordFinder wordFinder = new DefaultWordFinder();
 
         [Theory]
         [ClassData(typeof(ReturnLocationTestData))]

@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("WordSearchSolverTests")]
 namespace WordSearchSolver
 {
-    internal class WordFinder : IWordFinder
+    internal class DefaultWordFinder : IWordFinder
     {
         private string _word;
         private int[,] _location;
 
         public char[,] Puzzle { get; private set; }
 
-        public WordFinder()
+        public DefaultWordFinder()
         {
             Puzzle = new char[,] { };
         }
