@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WordSearchSolverApp\WordSearchSolverApp.csproj" />
     <ProjectReference Include="..\WordSearchSolver\WordSearchSolver.csproj" />
   </ItemGroup>
 
