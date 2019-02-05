@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WordSearchSolverApp": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../example.txt"
+    }
+  }
+}
